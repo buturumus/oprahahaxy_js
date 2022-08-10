@@ -1,0 +1,3 @@
+# /30 * * * * env - `cat /etc/environment` python3 /base/get_pw.py >> /dev/null 2>&1
+*/30 * * * * node /base/getPw.js >> /dev/null 2>&1
+

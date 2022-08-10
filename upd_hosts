@@ -1,0 +1,12 @@
+#!/bin/bash
+
+for LINE in \
+  '77.111.244.26 eu0.sec-tunnel.com' \
+  '77.111.244.19 eu1.sec-tunnel.com' \
+  '77.111.244.22 eu2.sec-tunnel.com' \
+  '77.111.247.51 eu3.sec-tunnel.com' \
+; do
+  echo $LINE >> /etc/hosts
+done
+  
+

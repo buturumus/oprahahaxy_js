@@ -1,0 +1,13 @@
+function FindProxyForURL(url, host) {
+  const regPrefix = 'eu';
+  const uname = '0';
+  const pw = 'eyJhbGciOiJFQ0RILUVTK0EyNTZLVyIsImN0eSI6IkpXVCIsImVuYyI6IkEyNTZHQ00iLCJlcGsiOnsia3R5IjoiRUMiLCJjcnYiOiJQLTI1NiIsIngiOiIwc2hFUHFXV2dCQ2I1dkNrQkNHRGg5SXN1a0pMby1jUFVScUxTSlN1Z1drIiwieSI6Il9sYWI0ZlROeE9JWUZObWJ1SUI1YnVKZDRrSF83RWswVXV3SjhUYzU5OEUifX0.uX06rNH2K8kXSL7MDIXPjQljauH2eNfxLQop_pcvxIrMHaTj_Ae7Ww.89kZxOzOYZtNcXri.CrJU2iFSjDqOswZ3SO-aAH9FHVrEuV059_bAxAiskZSL91BOSe_0eqMMOWmZNlfcjzB1U-jbREYd6hQGmj7PoKMYXXVmutBjXalblKil6PUc_rR5aHAmu9wBv5jSCQi4p3uP37grYMXnkqG-M4t0oGqi0Hk0RWdlppFsiE_urMz-gKkW0nkncXVoUSJzrkXW1STq-nJ2Z-lnSO6A_Uz0BReuH1I6bpKqenHZ-Y_W9HbLX5cuCDY-l5XPAxLLeCdNY_eWfdm4IhJoUfu4egyag9sQYK1m7fUcoxjSS504ldT6G1WroMJyk_FTo2Q9j1qgezLGSnGZJA6vXRzvdnNiEz8gIhUHBcAIS0hM2_Ql2clrX2d6MAzAHOzV-wBuelrcenvs9BT2YorZqZnUp3hQ6Y6nfmRX9JfuwlK8AJd86AE-LSaDXW-5juEl9QwZMG4IJ7TCeMr2aIHF.hDBMPKM4WA0ZoO_8vCTC8A';
+  let res = '';
+  for(let proxyNum = 0; proxyNum <= 3; proxyNum++) { 
+    res += ( res ? ';' : '' ) 
+      + 'HTTPS ' + uname + ':' + pw + '@'
+      + regPrefix + proxyNum + '.sec-tunnel.com:443'
+  };
+  return res;
+}
+

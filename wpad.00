@@ -1,0 +1,13 @@
+function FindProxyForURL(url, host) {
+  const regPrefix = 'eu';
+  const uname = '0';
+  const pw = 'somePw';
+  let res = '';
+  for(let proxyNum = 0; proxyNum <= 3; proxyNum++) { 
+    res += ( res ? ';' : '' ) 
+      + 'HTTPS ' + uname + ':' + pw + '@'
+      + regPrefix + proxyNum + '.sec-tunnel.com:443'
+  };
+  return res;
+}
+
