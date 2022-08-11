@@ -12,6 +12,7 @@ const XSRV_PS = 'xvfb-run';
 const OPERA_CMD = XSRV_FILE + ' /usr/local/opera-beta/opera-beta --no-sandbox';
 const OPERA_PS = 'opera-beta';
 const DUMP_PREFIX = '/base/dump'
+const PW_FILE = '/base/www/pw.txt'
 const WPAD_TEMPL = '/base/wpad.00'
 const WPAD_FILE = '/base/www/wpad.dat'
 const DUMP_BLOCK_SZ = '100000'
@@ -61,11 +62,15 @@ function usePw(pw) {
 }
 
 // send a pw-candidate to proxy(-ies) to check if it's valid
-function checkPw(pwCandid, proxyUrlsSeq) {
+function checkPw(pwCandid, proxyUrlsSeq, goodPwCallback, wrongPwCallback) {
   // checks on start
   if (proxyPw) return;
+  // if no next proxy to check pw-candidate then it's time to quit checks
   const proxyUrl = proxyUrlsSeq.next().value;
-  if (! proxyUrl) return;
+  if ( ! proxyUrl) {
+    wrongPwCallback();
+    return;
+  };
   // dbg.msg.
   console.log(' ');
   console.log('checking with proxy ' + proxyUrl + ' pw candid.: ' + pwCandid);
@@ -95,10 +100,11 @@ function checkPw(pwCandid, proxyUrlsSeq) {
     resp.on('data', (chunk) => {
       data += chunk;
     });
-    // on good pw do final job in callback
-    resp.on('close', () => {
-      usePw(pwCandid);
-    });
+    // on good pw do final job in corresp.callback
+    resp.on('close', goodPwCallback);
+//  resp.on('close', () => {
+//    usePw(pwCandid);
+//  });
   });
   // on some troubles with proxy-url access
   request.on('error', (err) => {
@@ -134,13 +140,13 @@ function runPwCandids(dumpFile) {
             && ( ! pwCandids.includes(pwCandid))
         ) {  
           // and if the pwCandid is ok
-
+          // dbg.msg.
           console.log(' ');
           console.log('pw candid.found: ' + pwCandid);
-
+          // send it to check
           pwCandids.push(pwCandid);
           const proxyUrlsSeq = nextProxyUrlGen();
-          checkPw(pwCandid, proxyUrlsSeq);
+          checkPw(pwCandid, proxyUrlsSeq, usePw(pwCandid), () => {});
         };
         // and in any case reset init.vars
         pwCandid = '';
@@ -190,15 +196,29 @@ function mkDump() {
 }
 
 // for a start check pw from old pw file 
-funciont checkPrevPw() {
+function checkPrevPw() {
   // if pw file exists
-  fs.access(DUMP_PREFIX + '.' + operaPid, fs.F_OK, (err) => {
-    if (err) return;
-
+  fs.access(PW_FILE, fs.F_OK, (err) => {
+    if (err) {
+      console.log('no file');
+      return;
+    };
+    // read old pw from file
+    fs.readFile(PW_FILE, 'utf8', function(err, data) {
+      if (err) return;
+      // check pw and run new search if unsuccess
+      const proxyUrlsSeq = nextProxyUrlGen();
+      checkPw(data, proxyUrlsSeq, 
+        () => { console.log('old pw is ok') }, 
+        mkDump
+      );
+    });
   });
 }
 
 
 /* run */
 
-mkDump();
+//mkDump();
+checkPrevPw();
+
