@@ -1,4 +1,4 @@
-// vpn_init.py
+// vpnInit.js
 'use strict'
 
 const fs = require('fs');
