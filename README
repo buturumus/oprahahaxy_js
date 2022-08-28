@@ -12,8 +12,8 @@ Init script installs (most conservative version of) Opera in fake X-server envir
 To use credentials the main script constructs proxy-autoconfiguration file (wpad.dat), which should be pointed by url in browser's settings. Grabbed password is written right in the file thouhg for example for Firefox it should also be entered in a prompt form manually so there is also password-only containing file in the same webserver's directory.
 
 So after deployment with current project configuration:
-http://my_cont_address:8001/wpad.dat - proxy autoconfiguration script,
-http://my_cont_address:8001/pw.txt - password only containing file.
+http://my_cont_address:8880/wpad.dat - proxy autoconfiguration script,
+http://my_cont_address:8880/pw.txt - password only containing file.
 
 And finally. Opera puts it's proxies in 3 locations, but the project currently uses EU only. To reach them you must add on your client computer to your 'hosts' file manually:
   77.111.244.26 eu0.sec-tunnel.com
