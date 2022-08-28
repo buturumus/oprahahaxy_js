@@ -22,5 +22,6 @@ RUN \
   dpkg-deb -x /tmp/opera-beta_62.0.3331.55_amd64.deb /tmp/opera/ && \
   mv /tmp/opera/usr/lib/x86_64-linux-gnu/opera-beta /usr/local && \
   chmod 004 /usr/local/opera-beta/opera_autoupdate && \
-  rm -f /tmp/opera-beta_62.0.3331.55_amd64.deb
+  rm -f /tmp/opera-beta_62.0.3331.55_amd64.deb && \
+  npm install -g http-server
 

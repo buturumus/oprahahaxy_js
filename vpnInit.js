@@ -7,7 +7,7 @@ const XSRV_FILE = '/usr/bin/xvfb-run';
 const XSRV_PS = 'xvfb-run';
 const OPERA_CMD = XSRV_FILE + ' /usr/local/opera-beta/opera-beta --no-sandbox';
 const OPERA_PS = 'opera-beta';
-const TIMEOUT = 20;
+const TIMEOUT = 10000;
 const PROFILE_DIR = '/root/.config/opera-beta';
 const PREF_FILE = PROFILE_DIR + '/Preferences';
 const S_FROM = /"freedom":{[^}]+}/;
@@ -25,6 +25,7 @@ exec(OPERA_CMD + ' & '
   if (err) return;
   setTimeout( () => {
     fs.readFile(PREF_FILE, 'utf8', function(err, data) {
+      // rewrite vpn-cont.part of config
       const prefsParts = data.split(S_FROM);
       fs.writeFile(PREF_FILE, prefsParts[0] + S_TO + prefsParts[1], (err) => {
       });

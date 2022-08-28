@@ -5,9 +5,11 @@ node /base/vpnInit.js
 mkdir -p /base/www
 #node /base/getPw.js
 bash -c 'ulimit -f 200000 && bash'
-## cron
-#cp -f /base/get_pw.cron /etc/cron.d/
-#chmod 0644 /etc/cron.d/get_pw.cron
-#crontab /etc/cron.d/get_pw.cron
-#env > /etc/environment && cron -f
+# webserver
+http-server -p 8880 /base/www &
+# cron
+cp -f /base/get_pw.cron /etc/cron.d/
+chmod 0644 /etc/cron.d/get_pw.cron
+crontab /etc/cron.d/get_pw.cron
+env > /etc/environment && cron -f
 

@@ -15,7 +15,7 @@ const DUMP_PREFIX = '/base/dump'
 const PW_FILE = '/base/www/pw.txt'
 const WPAD_TEMPL = '/base/wpad.00'
 const WPAD_FILE = '/base/www/wpad.dat'
-const TIMEOUT = 10;
+const TIMEOUT = 10000;
 const PW_MIN_LEN = 700;
 const TEST_URL = 'ipv4.icanhazip.com';
 const PROXY_URLS = [
@@ -180,94 +180,6 @@ function runPwCandids(dumpFile) {
       };
     });
 }
-/*
-function runPwCandids(dumpFile) {
-    let pwCandid = '';
-    let withMandChars = false;
-    // read dump file with streams
-    const readableStream = fs.createReadStream(dumpFile);
-    readableStream.on('error', function (error) {
-        console.log(`read error: ${error.message}`);
-    });
-    readableStream.on('data', (chunk) => {
-      for (const dumpCharCode of chunk) {
-        // check on start of every iteration
-        if (proxyPw) return;
-        //   
-        if (legalPwCharCodes.includes(dumpCharCode)) {
-          pwCandid += String.fromCharCode(dumpCharCode);
-          if (mandPwCharCodes.includes(dumpCharCode)) withMandChars = true;
-          continue;
-        // or if pwCandid string finished (char is illegal) then start checks
-        } else if (pwCandid.length >= PW_MIN_LEN && withMandChars
-            && ( ! pwCandids.includes(pwCandid))
-        ) {  
-          // dbg.msg.
-          console.log(' ');
-          console.log('pw candid.found: ' + pwCandid);
-          // send it to check as pw
-          pwCandids.push(pwCandid);
-          const proxyUrlsSeq = nextProxyUrlGen();
-
-          checkPw_(pwCandid, proxyUrlsSeq, 
-            () => { console.log('checkPw callbacki_') },
-            () => {}
-          );
-
-          checkPw(pwCandid, proxyUrlsSeq, 
-            () => {
-              console.log();
-              console.log('usePw(' + pwCandid + ')');
-//              usePw(pwCandid);
-              console.log();
-            },
-            () => {}
-          );
-        };
-        // and in any case reset init.vars
-        pwCandid = '';
-        withMandChars = false;
-      };
-    });
-}
-
-function mkAndParseDump_() {
-  const { exec } = require('child_process');
-  let operaPid;
-  console.log('running opera');
-  exec(OPERA_CMD + ' & '
-    ,(err, stdout, stderr) => {
-      if (err) {
-        console.error('err:');
-        console.error(err);
-        return;
-      };
-  });
-  setTimeout( () => {
-    // find opera pid
-    exec('ps -aux | grep ' + OPERA_PS + ' | grep -v ' + XSRV_PS 
-    ,(err, stdout, stderr) => {
-      operaPid = stdout.split(/\r?\n/)[0].split(/ +/)[1];
-      if ( ! operaPid ) return;
-      console.log('dumping');
-      // make dump
-      exec(
-        'rm -f ' + DUMP_PREFIX + '.*'
-        + ' && gcore -o ' + DUMP_PREFIX + ' ' + operaPid
-        + ' && killall ' + OPERA_PS
-//      + ' && ls -1 ' + DUMP_PREFIX + '.*'
-      ,(err, stdout, stderr ) => {
-        if (err) return;
-        // if dump exists
-        fs.access(DUMP_PREFIX + '.' + operaPid, fs.F_OK, (err) => {
-          if (err) return;
-          runPwCandids_(DUMP_PREFIX + '.' + operaPid);
-        });
-      });
-    });
-  }, 5000);
-}
-*/
 
 // run opera and make a dump
 function mkAndParseDump() {
@@ -303,7 +215,7 @@ function mkAndParseDump() {
         });
       });
     });
-  }, 10000);
+  }, TIMEOUT);
 }
 
 // for a start check pw from old pw file 
@@ -338,7 +250,7 @@ function checkPrevPw() {
 }
 
 
-/* run */
+/* Run */
 
 checkPrevPw();
 

@@ -6,15 +6,6 @@ services:
     volumes:
       - .:/base
     command: bash -c /base/cont.rc
-#   depends_on:
-#     - nginx
     ports:
-      - '8080:8080'
+      - '8880:8880'
         
-# nginx:
-#   image: nginx:1.20.2-perl
-#   volumes:
-#     - ./www:/usr/share/nginx/html:ro
-#   ports:
-#     - '8001:80'
-
