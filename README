@@ -1,5 +1,5 @@
 --------------------------------------------------------------
-oprahahaxy (python implementation)
+oprahahaxy (node.js implementation, seems it's fastest one)
 --------------------------------------------------------------
 
 This is a (primitive) tool for digging Opera vpn credentials up. They then can be used with any other modern browser, not only Opera itself. The thing was inspired by Oprah-proxy project (https://github.com/spaze/oprah-proxy), which now does not work, so a little reverse engineering took place too.
